@@ -20,7 +20,7 @@ public class PollResponse implements Serializable {
 	
 	private Participant participant;
 	
-	private PollSurvey pollActivity;
+	private PollSurvey pollSurvey;
 
 	@Id
 	@GeneratedValue
@@ -42,12 +42,12 @@ public class PollResponse implements Serializable {
 	}
 
 	@ManyToOne
-	public PollSurvey getPollActivity() {
-		return pollActivity;
+	public PollSurvey getPollSurvey() {
+		return pollSurvey;
 	}
 
-	public void setPollActivity(PollSurvey pollActivity) {
-		this.pollActivity = pollActivity;
+	public void setPollSurvey(PollSurvey pollSurvey) {
+		this.pollSurvey = pollSurvey;
 	}
 
 }

@@ -23,6 +23,8 @@ public class Participant implements Serializable {
 	private byte[] hashSalt;
 
 	private List<InterestArea> interestAreas;
+	
+	private String participantGcmId;
 
 	@Id
 	public String getPhoneNumber() {
@@ -40,6 +42,14 @@ public class Participant implements Serializable {
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
+	}
+    @Lob
+	public String getParticipantGcmId() {
+		return participantGcmId;
+	}
+
+	public void setParticipantGcmId(String participantGcmId) {
+		this.participantGcmId = participantGcmId;
 	}
 
 	@Lob

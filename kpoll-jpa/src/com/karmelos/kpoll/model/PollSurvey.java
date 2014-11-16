@@ -1,16 +1,20 @@
 package com.karmelos.kpoll.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-public class PollSurvey implements Serializable {
+public  abstract class PollSurvey implements Serializable {
 
 	/**
 	 * 
@@ -21,7 +25,7 @@ public class PollSurvey implements Serializable {
 
 	private PollOwner pollOwner;
 	
-	private String pollName;
+	private String description;
 	
 	private int pushCount;
 	
@@ -30,6 +34,10 @@ public class PollSurvey implements Serializable {
 	private List<InterestArea> interestAreas;
 	
 	private List<Participant> receivers;
+	
+	private Date startDate;
+	
+	private Date endDate;
 	
 	@Id
 	@GeneratedValue
@@ -76,13 +84,14 @@ public class PollSurvey implements Serializable {
 	public void setReceivers(List<Participant> receivers) {
 		this.receivers = receivers;
 	}
-
-	public String getPollName() {
-		return pollName;
+	
+    @Lob
+	public String getDescription() {
+		return description;
 	}
 
-	public void setPollName(String pollName) {
-		this.pollName = pollName;
+	public void setDescription(String pollName) {
+		this.description = pollName;
 	}
 
 	public int getPushCount() {
@@ -92,4 +101,23 @@ public class PollSurvey implements Serializable {
 	public void setPushCount(int pushCount) {
 		this.pushCount = pushCount;
 	}
+	
+	@Temporal(TemporalType.DATE)
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+    @Temporal(TemporalType.DATE)
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+  
 }
