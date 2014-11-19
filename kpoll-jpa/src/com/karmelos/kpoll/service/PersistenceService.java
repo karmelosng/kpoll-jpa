@@ -18,6 +18,11 @@ import com.karmelos.kpoll.model.PollResponse;
  *
  */
 public interface PersistenceService {
+	
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param participant
@@ -42,12 +47,12 @@ public interface PersistenceService {
 	void respondToPoll(PollSurvey pollActivity,ChoicePollOption cOption,String keyOrFreeResponse,PollResponse pollResponse,
 			Participant participant);
 
+	
 	/**
-	 * 
-	 * @param pollResponse
+	 * @param pollId
 	 * @return
 	 */
-	Object viewPollResults(List<PollResponse> pollResponse);
+	Object viewPollResults(Long pollId);
 
 	/**
 	 * 
@@ -107,8 +112,10 @@ public interface PersistenceService {
 	 * @param emailAddress
 	 * @return
 	 */
-	String manageOwner(String ownerName, String emailAddress);
+	String manageOwner(String ownerName, String emailAddress,String password,byte[] hashSalt);
 	
+	
+	String manageInterestAreas(Long id, String description);
 	
 	/**
 	 * @param entity

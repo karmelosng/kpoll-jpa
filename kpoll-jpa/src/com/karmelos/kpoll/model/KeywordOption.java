@@ -1,33 +1,25 @@
 package com.karmelos.kpoll.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class InterestArea implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4196208686357159716L;
-
-	private Long id;
+public class KeywordOption {
+	
+    
+	private String id;
 	
 	private String description;
 
 	@Id
-	@GeneratedValue
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
+    
 	public String getDescription() {
 		return description;
 	}
@@ -35,4 +27,6 @@ public class InterestArea implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
 }

@@ -123,7 +123,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 					KeywordPollResponse kResponse = new KeywordPollResponse();
 					kResponse.setParticipant(participant);
 					kResponse.setPollSurvey(pollActivity);
-					kResponse.setKeywordResponse(keyOrFreeResponse);
+					//kResponse.setKeywordResponse(keyOrFreeResponse);
 					entityManager.persist(kResponse);
 				}
 				else {
@@ -137,9 +137,16 @@ public class PersistenceServiceImpl implements PersistenceService {
 		
 	}
 	@Override
-	public Object viewPollResults(List<PollResponse> pollResponse) {
+	public Object viewPollResults(Long pollId) {
 		// TODO Auto-generated method stub
-		return null;
+
+		 Query q = entityManager.createQuery("select o from PollResponse o WHERE o.pollSurvey.id =:pollId ");
+		 q.setParameter("pollId", pollId);
+         //convert list to SimModule[] and return
+         List<PollResponse> list = q.getResultList();
+         
+         return list;
+	
 	}
 
     
@@ -204,15 +211,18 @@ public class PersistenceServiceImpl implements PersistenceService {
 	@Override
 	public List<PollSurvey> loadPollSurveys(int interestArea_id) {
 		// To load the pollsurvey from
+		InterestArea dummy = new InterestArea();
+		dummy.setId(Long.valueOf(interestArea_id));
 		Query q=null;
 	   if(interestArea_id ==0){
 		    q = entityManager.createQuery("select o from PollSurvey o ");  
 	   }
 	   else{
-		   q = entityManager.createQuery("select o from PollSurvey o  WHERE o.");  
+		   q = entityManager.createQuery("select o from PollSurvey o WHERE :interestArea member Of o.interestAreas");  
 	   }		 
-
-		         List<PollSurvey> listed = q.getResultList();
+	          q.setParameter("interestArea", dummy);
+	          
+		     List<PollSurvey> listed = q.getResultList();
 		         
 		         return listed;
 	
@@ -273,20 +283,33 @@ public class PersistenceServiceImpl implements PersistenceService {
 		return response;
 	}
 	@Override
-	public String manageOwner(String ownerName, String emailAddress) {
+public String manageOwner(String ownerName, String emailAddress,String password,byte[] hashSalt)
+{
 		String response =null;
 		try{
-			
-			PollOwner pollOwner = new PollOwner();
-			pollOwner.setEmailAddress(emailAddress);
-			pollOwner.setOwnerName(ownerName);
-			
-			
-			entityManager.persist(pollOwner);
+			if(emailAddress == null){
+				// when new participant
+				PollOwner pollOwner = new PollOwner();
+				pollOwner.setEmailAddress(emailAddress);
+				pollOwner.setOwnerName(ownerName);
+				pollOwner.setHashSalt(hashSalt);
+				pollOwner.setPasswordHash(password);
+				
+				entityManager.persist(pollOwner);
+			}
+			else{
+				PollOwner pollOwner = new PollOwner();
+				pollOwner.setEmailAddress(emailAddress);
+				pollOwner.setOwnerName(ownerName);
+				pollOwner.setPasswordHash(password);
+				
+				entityManager.merge(pollOwner);
+			  }
 		}
 		catch(Exception e){
 			response = e.getLocalizedMessage();
 		}
+		
 	return response;
 	}
 	
@@ -365,6 +388,27 @@ public class PersistenceServiceImpl implements PersistenceService {
 		  }
 		
 		return isAuthenticated;
+	}
+	@Override
+	public String manageInterestAreas(Long id, String description) {
+		// Delete, update add Add new InterestAreas
+		if(id == null){
+			// new Participant
+			InterestArea intArea = new InterestArea();
+			intArea.setDescription(description);
+			
+			entityManager.persist(intArea);
+		}
+		else
+		{
+			InterestArea intArea = new InterestArea();
+			intArea.setId(id);
+			intArea.setDescription(description);
+			
+			entityManager.merge(intArea);
+			
+		}
+		return null;
 	}
 
 }
